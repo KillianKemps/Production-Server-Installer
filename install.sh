@@ -49,7 +49,7 @@ if [ $ifFTP = "Y" ] || [ $ifFTP = 'y' ]
     systemctl enable vsftpd
 
     echo "You can now connect by FTP to your server with the root user"
-    echo "If you have SSL certificates, you may transfer them now. It is more secure through SSH."
+    echo "If you have SSL certificates, you may transfer them now to /root/certificates. It is more secure through SSH."
 
     read -p 'Would you like to use SFTP by installing your certificates? [Y/n] : ' ifSFTP
 
