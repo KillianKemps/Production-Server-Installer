@@ -59,6 +59,34 @@ if [ $ifFTP = "Y" ] || [ $ifFTP = 'y' ]
         read -p 'Give the key name: ' SSLKey
         read -p 'Give the certificate name: ' SSLCert
         echo "Setting up SFTP with $SSLKey as key and $SSLCert as certificate"
-        
     fi
+fi
+
+read -p 'Would you like to setup SSH for easy root login? [Y/n] : ' ifSSH
+
+if [ $ifSSH = "Y" ] || [ $ifSSH = 'y' ]
+  then
+    echo "Put your public key to root's ~/.ssh/authorized_keys"
+fi
+
+read -p 'Would you like to setup Git? [Y/n] : ' ifGit
+
+if [ $ifGit = "Y" ] || [ $ifGit = 'y' ]
+  then
+    pacman -S git
+    # Create git user
+    useradd -m -s /bin/bash git
+    su git
+    cd
+    mkdir .ssh && chmod 700 .ssh
+    touch .ssh/authorized_keys && chmod 600 .ssh/authorized_keys
+    # XXX Put dynamic vars instead
+    cat /root/.ssh/id_rsa.killian.pub >> ~/.ssh/authorized_keys
+
+    read -p 'Please give the project name in low-case : ' project_name
+    # Create git project repository
+    cd /opt/git
+    mkdir $project_name.git
+    cd $project_name.git
+    git init --bare
 fi
