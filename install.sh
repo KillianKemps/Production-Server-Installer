@@ -33,7 +33,7 @@ if [ $ifsudo = "Y" ] || [ $ifsudo = 'y' ]
   then
     # Install sudo
     echo "Installing sudo..."
-    pacman -S sudo
+    pacman -S --noconfirm sudo
 fi
 
 read -p 'Would you like to install FTP? [Y/n] : ' ifFTP
@@ -42,7 +42,7 @@ if [ $ifFTP = "Y" ] || [ $ifFTP = 'y' ]
   then
     # Install FTP
     echo "Installing FTP..."
-    pacman -S vsftpd
+    pacman -S --noconfirm vsftpd
     # XXX Set right wget fetch of conf
     cp https://github.com/KillianKemps/Production-Server-Installer/conf/vsftpd.conf /etc/vsftpd.conf
     systemctl start vsftpd
@@ -73,7 +73,7 @@ read -p 'Would you like to setup Git? [Y/n] : ' ifGit
 
 if [ $ifGit = "Y" ] || [ $ifGit = 'y' ]
   then
-    pacman -S git
+    pacman -S --noconfirm git
     # Create git user
     useradd -m -s /bin/bash git
     su git
