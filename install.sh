@@ -25,7 +25,7 @@
 echo "*******************************************************************************"
 echo "***             Arch Linux Production Server Installation Script            ***"
 echo "*******************************************************************************"
-echo "This script will install sudo, FTP"
+echo "This script will install sudo, FTP, SFTP, Git"
 
 read -r -p 'Would you like to install sudo? [Y/n] : ' ifsudo
 
@@ -43,8 +43,7 @@ if [[ $ifFTP = "Y" ]] || [[ $ifFTP = 'y' ]]
     # Install FTP
     echo "Installing FTP..."
     pacman -S --noconfirm vsftpd
-    # XXX Set right wget fetch of conf
-    cp https://github.com/KillianKemps/Production-Server-Installer/conf/vsftpd.conf /etc/vsftpd.conf
+    cp <(wget -qO- https://raw.githubusercontent.com/KillianKemps/Production-Server-Installer/master/conf/vsftpd.conf) /etc/vsftpd.conf
     systemctl start vsftpd
     systemctl enable vsftpd
 
