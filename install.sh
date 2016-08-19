@@ -80,20 +80,25 @@ read -r -p 'Would you like to setup Git and the project repository? [Y/n] : ' if
 
 if [[ $ifGit = "Y" ]] || [[ $ifGit = 'y' ]]
   then
-    pacman -S --noconfirm git
     if id "git" >/dev/null 2>&1; then
       echo "git user already exist"
+      if [ ! -d "/home/git" ]; then
+        echo "git user doesn't have a home directory. Creating it."
+        mkhomedir_helper git
+      fi
     else
-      # Create git user
-      useradd -m -s /bin/bash git
-      su -c git
+      # Create git user with its home
+      useradd -m -d /home/git -s /bin/bash git
     fi
 
-    cd || exit
-    mkdir .ssh && chmod 700 .ssh
-    touch .ssh/authorized_keys && chmod 600 .ssh/authorized_keys
+    pacman -S --noconfirm git
+
+    cd /home/git || exit
+    mkdir .ssh && chown git:git .ssh/ && chmod 700 .ssh
+    touch .ssh/authorized_keys && chown git:git .ssh/authorized_keys && chmod 600 .ssh/authorized_keys
+
     # XXX Put dynamic vars instead
-    cat /root/.ssh/id_rsa.killian.pub >> ~/.ssh/authorized_keys
+    cat /root/.ssh/id_rsa.killian.pub >> /home/git/.ssh/authorized_keys
 
     read -r -p 'Please give the project name in low-case : ' project_name
 
@@ -107,6 +112,7 @@ if [[ $ifGit = "Y" ]] || [[ $ifGit = 'y' ]]
     mkdir "$project_name.git"
     cd "$project_name.git" || exit
     git init --bare
+    chown -R git:git /opt/git
 
     echo "Your project is now available at git@$ipadress:/opt/git/$project_name.git (you may replace the IP address with the domain name)"
     # Come back to original user
