@@ -27,6 +27,9 @@ echo "***             Arch Linux Production Server Installation Script          
 echo "*******************************************************************************"
 echo "This script will install sudo, FTP, SFTP, Git"
 
+# Get the servers IP adress
+ipadress=$(ip addr show eth0 | grep inet | awk '{ print $2; }' | sed 's/\/.*$//' | head -n 1)
+
 read -r -p 'Would you like to install sudo? [Y/n] : ' ifsudo
 
 if [[ $ifsudo = "Y" ]] || [[ $ifsudo = 'y' ]]
@@ -68,7 +71,7 @@ if [[ $ifSSH = "Y" ]] || [[ $ifSSH = 'y' ]]
     echo "Put your public key to root's ~/.ssh/authorized_keys"
 fi
 
-read -r -p 'Would you like to setup Git? [Y/n] : ' ifGit
+read -r -p 'Would you like to setup Git and the project repository? [Y/n] : ' ifGit
 
 if [[ $ifGit = "Y" ]] || [[ $ifGit = 'y' ]]
   then
@@ -88,4 +91,6 @@ if [[ $ifGit = "Y" ]] || [[ $ifGit = 'y' ]]
     mkdir "$project_name.git"
     cd "$project_name.git" || exit
     git init --bare
+
+    echo "Your project is now available at git@$ipadress:/opt/git/$project_name.git (you may replace the IP address with the domain name)"
 fi
