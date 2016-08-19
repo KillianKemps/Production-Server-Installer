@@ -2,7 +2,7 @@
 
 # The MIT License (MIT)
 #
-# Copyright (c) 2015 Killian Kemps
+# Copyright (c) 2016 Killian Kemps
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@ echo "***             Arch Linux Production Server Installation Script          
 echo "*******************************************************************************"
 echo "This script will install sudo, FTP, SFTP, Git"
 
-# Get the servers IP adress
+# Get the server's IP adress
 ipadress=$(ip addr show eth0 | grep inet | awk '{ print $2; }' | sed 's/\/.*$//' | head -n 1)
 
 read -r -p 'Would you like to install sudo? [Y/n] : ' ifsudo
@@ -57,10 +57,15 @@ if [[ $ifFTP = "Y" ]] || [[ $ifFTP = 'y' ]]
 
     if [[ $ifSFTP = "Y" ]] || [[ $ifSFTP = 'y' ]]
       then
-        echo "Put your key and certificate in /root/certificates"
-        read -r -p 'Give the key name: ' SSLKey
-        read -r -p 'Give the certificate name: ' SSLCert
-        echo "Setting up SFTP with $SSLKey as key and $SSLCert as certificate"
+        echo "NOT YET IMPLEMENTED"
+
+        # echo "Put your key and certificate in /root/certificates"
+        # read -r -p 'Give the key name: ' SSLKey
+        # read -r -p 'Give the certificate name: ' SSLCert
+        # echo "Setting up SFTP with $SSLKey as key and $SSLCert as certificate"
+
+        # XXX Add SSL keys to conf/vsftp_sftp configuration file of the script
+        # and append this sftp conf to vsftpd.conf
     fi
 fi
 
