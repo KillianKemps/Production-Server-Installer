@@ -81,9 +81,14 @@ read -r -p 'Would you like to setup Git and the project repository? [Y/n] : ' if
 if [[ $ifGit = "Y" ]] || [[ $ifGit = 'y' ]]
   then
     pacman -S --noconfirm git
-    # Create git user
-    useradd -m -s /bin/bash git
-    su -c git
+    if id "git" >/dev/null 2>&1; then
+      echo "git user already exist"
+    else
+      # Create git user
+      useradd -m -s /bin/bash git
+      su -c git
+    fi
+
     cd || exit
     mkdir .ssh && chmod 700 .ssh
     touch .ssh/authorized_keys && chmod 600 .ssh/authorized_keys
@@ -91,6 +96,12 @@ if [[ $ifGit = "Y" ]] || [[ $ifGit = 'y' ]]
     cat /root/.ssh/id_rsa.killian.pub >> ~/.ssh/authorized_keys
 
     read -r -p 'Please give the project name in low-case : ' project_name
+
+    if [ ! -d "/opt/git" ]; then
+      echo "/opt/git directory doesn't exist. Creating directory."
+      mkdir /opt/git
+    fi
+
     # Create git project repository
     cd /opt/git || exit
     mkdir "$project_name.git"
