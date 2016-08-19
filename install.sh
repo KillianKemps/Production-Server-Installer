@@ -98,4 +98,6 @@ if [[ $ifGit = "Y" ]] || [[ $ifGit = 'y' ]]
     git init --bare
 
     echo "Your project is now available at git@$ipadress:/opt/git/$project_name.git (you may replace the IP address with the domain name)"
+    # Come back to original user
+    exit
 fi
