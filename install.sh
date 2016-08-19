@@ -27,18 +27,18 @@ echo "***             Arch Linux Production Server Installation Script          
 echo "*******************************************************************************"
 echo "This script will install sudo, FTP"
 
-read -p 'Would you like to install sudo? [Y/n] : ' ifsudo
+read -r -p 'Would you like to install sudo? [Y/n] : ' ifsudo
 
-if [ $ifsudo = "Y" ] || [ $ifsudo = 'y' ]
+if [[ $ifsudo = "Y" ]] || [[ $ifsudo = 'y' ]]
   then
     # Install sudo
     echo "Installing sudo..."
     pacman -S --noconfirm sudo
 fi
 
-read -p 'Would you like to install FTP? [Y/n] : ' ifFTP
+read -r -p 'Would you like to install FTP? [Y/n] : ' ifFTP
 
-if [ $ifFTP = "Y" ] || [ $ifFTP = 'y' ]
+if [[ $ifFTP = "Y" ]] || [[ $ifFTP = 'y' ]]
   then
     # Install FTP
     echo "Installing FTP..."
@@ -51,42 +51,42 @@ if [ $ifFTP = "Y" ] || [ $ifFTP = 'y' ]
     echo "You can now connect by FTP to your server with the root user"
     echo "If you have SSL certificates, you may transfer them now to /root/certificates. It is more secure through SSH."
 
-    read -p 'Would you like to use SFTP by installing your certificates? [Y/n] : ' ifSFTP
+    read -r -p 'Would you like to use SFTP by installing your certificates? [Y/n] : ' ifSFTP
 
-    if [ $ifSFTP = "Y" ] || [ $ifSFTP = 'y' ]
+    if [[ $ifSFTP = "Y" ]] || [[ $ifSFTP = 'y' ]]
       then
         echo "Put your key and certificate in /root/certificates"
-        read -p 'Give the key name: ' SSLKey
-        read -p 'Give the certificate name: ' SSLCert
+        read -r -p 'Give the key name: ' SSLKey
+        read -r -p 'Give the certificate name: ' SSLCert
         echo "Setting up SFTP with $SSLKey as key and $SSLCert as certificate"
     fi
 fi
 
-read -p 'Would you like to setup SSH for easy root login? [Y/n] : ' ifSSH
+read -r -p 'Would you like to setup SSH for easy root login? [Y/n] : ' ifSSH
 
-if [ $ifSSH = "Y" ] || [ $ifSSH = 'y' ]
+if [[ $ifSSH = "Y" ]] || [[ $ifSSH = 'y' ]]
   then
     echo "Put your public key to root's ~/.ssh/authorized_keys"
 fi
 
-read -p 'Would you like to setup Git? [Y/n] : ' ifGit
+read -r -p 'Would you like to setup Git? [Y/n] : ' ifGit
 
-if [ $ifGit = "Y" ] || [ $ifGit = 'y' ]
+if [[ $ifGit = "Y" ]] || [[ $ifGit = 'y' ]]
   then
     pacman -S --noconfirm git
     # Create git user
     useradd -m -s /bin/bash git
-    su git
-    cd
+    su -c git
+    cd || exit
     mkdir .ssh && chmod 700 .ssh
     touch .ssh/authorized_keys && chmod 600 .ssh/authorized_keys
     # XXX Put dynamic vars instead
     cat /root/.ssh/id_rsa.killian.pub >> ~/.ssh/authorized_keys
 
-    read -p 'Please give the project name in low-case : ' project_name
+    read -r -p 'Please give the project name in low-case : ' project_name
     # Create git project repository
-    cd /opt/git
-    mkdir $project_name.git
-    cd $project_name.git
+    cd /opt/git || exit
+    mkdir "$project_name.git"
+    cd "$project_name.git" || exit
     git init --bare
 fi
