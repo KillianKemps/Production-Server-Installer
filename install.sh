@@ -46,7 +46,7 @@ if [[ $ifFTP = "Y" ]] || [[ $ifFTP = 'y' ]]
     # Install FTP
     echo "Installing FTP..."
     pacman -S --noconfirm vsftpd
-    cp <(curl https://raw.githubusercontent.com/KillianKemps/Production-Server-Installer/master/conf/vsftpd.conf) /etc/vsftpd.conf
+    curl https://raw.githubusercontent.com/KillianKemps/Production-Server-Installer/master/conf/vsftpd.conf > /etc/vsftpd.conf
     systemctl start vsftpd
     systemctl enable vsftpd
 
