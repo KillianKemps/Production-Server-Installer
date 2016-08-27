@@ -118,3 +118,21 @@ if [[ $ifGit = "Y" ]] || [[ $ifGit = 'y' ]]
     # Come back to original user
     exit
 fi
+
+read -r -p 'Would you like to setup NginX for NodeJS? [Y/n] : ' ifNginx
+
+if [[ $ifNginx = "Y" ]] || [[ $ifNginx = 'y' ]]; then
+  pacman -S --noconfirm nginx
+  systemctl start nginx
+  systemctl enable nginx
+fi
+
+read -r -p 'Would you like to setup Docker and Docker Compose? [Y/n] : ' ifDocker
+
+if [[ $ifDocker = "Y" ]] || [[ $ifDocker = 'y' ]]; then
+  pacman -S --noconfirm docker
+  systemctl start docker
+  systemctl enable docker
+
+  pacman -S --noconfirm docker-compose
+fi
