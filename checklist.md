@@ -9,6 +9,7 @@
 [ ] Create user for app
 [ ] Setup Docker
 [ ] Setup Docker Compose
+[ ] Setup App systemd service
 
 ## Details:
 
